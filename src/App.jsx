@@ -1,30 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from './components/Navbar.jsx';
-import HeroSpline from './components/HeroSpline.jsx';
-import FeatureGrid from './components/FeatureGrid.jsx';
-import DemoWireframe from './components/DemoWireframe.jsx';
+import EditorPanel from './components/EditorPanel.jsx';
+import AutoCutControls from './components/AutoCutControls.jsx';
+import ExportPanel from './components/ExportPanel.jsx';
 
 function App() {
+  const [videoUrl, setVideoUrl] = useState('');
+  const [audioBuffer, setAudioBuffer] = useState(null);
+  const [segments, setSegments] = useState([]);
+  const [subtitles, setSubtitles] = useState('');
+
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white">
       <Navbar />
+
       <main className="flex-1">
-        <HeroSpline />
-        <FeatureGrid />
-        <DemoWireframe />
-        <section id="roadmap" className="py-16 border-t border-slate-200">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h3 className="text-2xl font-bold text-slate-900">Roadmap</h3>
-            <p className="mt-3 text-slate-700 max-w-2xl mx-auto">
-              MVP includes auto-cut suggestions, transcription with local Whisper, a subtitle editor, and 9:16 export. Next milestones: OAuth uploads, cloud queues, and collaborative editing.
-            </p>
+        <section className="py-10">
+          <div className="max-w-6xl mx-auto px-4 space-y-10">
+            <div className="space-y-2">
+              <h1 className="text-3xl font-bold">All-in-one Shortform Editor</h1>
+              <p className="text-neutral-600 dark:text-neutral-300">Upload a video, auto-cut on silence, generate basic subtitles, and export everything from one place.</p>
+            </div>
+
+            <EditorPanel
+              onFileLoaded={() => {}}
+              videoUrl={videoUrl}
+              setVideoUrl={setVideoUrl}
+              setAudioBuffer={setAudioBuffer}
+            />
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <AutoCutControls
+                audioBuffer={audioBuffer}
+                onSegments={setSegments}
+                segments={segments}
+                onSubtitles={setSubtitles}
+              />
+
+              <ExportPanel
+                segments={segments}
+                subtitles={subtitles}
+                onSubtitlesChange={setSubtitles}
+              />
+            </div>
           </div>
         </section>
       </main>
-      <footer className="py-10 border-t border-slate-200 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-slate-600">© {new Date().getFullYear()} Viral Shorts Maker. All rights reserved.</p>
-          <div className="text-sm text-slate-600">Privacy-first • Local processing available</div>
+
+      <footer className="py-10 border-t border-neutral-200/60 dark:border-neutral-800">
+        <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-neutral-600 dark:text-neutral-400">
+          <p>© {new Date().getFullYear()} ClipSmith Studio</p>
+          <div>Private by default • All processing runs in your browser</div>
         </div>
       </footer>
     </div>

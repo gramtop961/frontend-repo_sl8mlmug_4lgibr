@@ -1,40 +1,21 @@
 import React from 'react';
-import { Rocket, Github, Settings } from 'lucide-react';
+import { Rocket, Settings } from 'lucide-react';
 
 export default function Navbar() {
   return (
-    <header className="w-full sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/60 bg-white/80 border-b border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <header className="w-full sticky top-0 z-50 backdrop-blur bg-white/60 dark:bg-neutral-950/60 border-b">
+      <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="inline-flex items-center justify-center h-9 w-9 rounded-lg bg-gradient-to-br from-fuchsia-500 to-blue-500 text-white shadow">
-            <Rocket className="h-5 w-5" />
-          </div>
-          <span className="font-semibold text-slate-900 text-lg">Viral Shorts Maker</span>
+          <Rocket className="text-blue-600" />
+          <span className="font-semibold">ClipSmith Studio</span>
         </div>
-        <nav className="hidden md:flex items-center gap-6 text-slate-700">
-          <a href="#features" className="hover:text-slate-900 transition">Features</a>
-          <a href="#demo" className="hover:text-slate-900 transition">Demo</a>
-          <a href="#roadmap" className="hover:text-slate-900 transition">Roadmap</a>
+        <nav className="flex items-center gap-4 text-sm text-neutral-600 dark:text-neutral-300">
+          <a href="#" className="hover:text-neutral-900 dark:hover:text-white">Editor</a>
+          <a href="#" className="hover:text-neutral-900 dark:hover:text:white hidden sm:inline">Docs</a>
+          <button className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border hover:bg-neutral-50 dark:hover:bg-neutral-900">
+            <Settings size={16} /> Settings
+          </button>
         </nav>
-        <div className="flex items-center gap-2">
-          <a
-            href="#"
-            className="hidden sm:inline-flex items-center gap-2 px-3 py-2 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50"
-            title="Settings"
-          >
-            <Settings className="h-4 w-4" />
-            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Settings</span>
-          </a>
-          <a
-            href="https://github.com/"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-slate-900 text-white hover:bg-slate-800"
-          >
-            <Github className="h-4 w-4" />
-            <span className="hidden sm:inline">GitHub</span>
-          </a>
-        </div>
       </div>
     </header>
   );
