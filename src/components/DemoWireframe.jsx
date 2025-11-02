@@ -1,5 +1,5 @@
-import React from 'react';
-import { Upload, Scissors, Subtitles, Download, PlayCircle } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { Upload, Scissors, Download, PlayCircle, AlertCircle, Text } from 'lucide-react';
 
 const Card = ({ icon: Icon, title, children, badge }) => (
   <div className="relative rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -19,6 +19,27 @@ const Card = ({ icon: Icon, title, children, badge }) => (
 );
 
 export default function DemoWireframe() {
+  const inputRef = useRef(null);
+  const [fileName, setFileName] = useState('');
+  const [error, setError] = useState('');
+
+  const onPick = () => inputRef.current?.click();
+  const onFile = (e) => {
+    setError('');
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('video/')) {
+      setError('Please select a valid video file.');
+      return;
+    }
+    const maxSize = 1024 * 1024 * 1024; // 1GB
+    if (file.size > maxSize) {
+      setError('File is too large. Please choose a file under 1GB.');
+      return;
+    }
+    setFileName(`${file.name} • ${(file.size / (1024 * 1024)).toFixed(1)} MB`);
+  };
+
   return (
     <section id="demo" className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,9 +52,20 @@ export default function DemoWireframe() {
           <Card icon={Upload} title="1. Uploader" badge="Step 1">
             <div className="rounded-lg border border-dashed border-slate-300 p-6 text-center">
               <p className="text-sm text-slate-600">Drag & drop a file or paste a YouTube URL</p>
-              <button className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-md bg-slate-900 text-white">
-                <Upload className="h-4 w-4" /> Choose file
-              </button>
+              <div className="mt-4 flex items-center justify-center gap-3">
+                <button onClick={onPick} className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-slate-900 text-white">
+                  <Upload className="h-4 w-4" /> Choose file
+                </button>
+                <input ref={inputRef} type="file" accept="video/*" className="hidden" onChange={onFile} />
+              </div>
+              {fileName && (
+                <p className="mt-3 text-sm text-slate-700">Selected: {fileName}</p>
+              )}
+              {error && (
+                <div className="mt-3 inline-flex items-center gap-2 text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2 rounded-md">
+                  <AlertCircle className="h-4 w-4" /> {error}
+                </div>
+              )}
             </div>
           </Card>
 
@@ -51,7 +83,7 @@ export default function DemoWireframe() {
             </div>
           </Card>
 
-          <Card icon={Subtitles} title="3. Subtitle editor" badge="Step 3">
+          <Card icon={Text} title="3. Subtitle editor" badge="Step 3">
             <div className="space-y-3">
               <div className="rounded-md bg-slate-50 p-3 border border-slate-200">
                 <p className="text-sm text-slate-800">[00:15 - 00:21] This is a sample line for the subtitle editor.</p>
